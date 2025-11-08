@@ -26,7 +26,8 @@
             <!-- ปุ่มไม่ใช่ (จะหนี) -->
             <button
                 id="noBtn"
-                class="bg-red-500 hover:bg-red-600 text-white font-bold text-xl sm:text-2xl px-8 sm:px-12 py-4 sm:py-6 rounded-full shadow-2xl transition-all duration-200 absolute">
+                class="bg-red-500 hover:bg-red-600 text-white font-bold text-xl sm:text-2xl px-8 sm:px-12 py-4 sm:py-6 rounded-full shadow-2xl transition-all duration-200 fixed"
+                style="opacity: 0;">
                 ไม่ใช่ ❌
             </button>
         </div>
@@ -82,8 +83,9 @@
             let targetX, targetY;
 
             if (isMobile) {
-                // บนมือถือ: วางไว้ด้านล่างปุ่ม "ใช่"
-                targetX = yesRect.left;
+                // บนมือถือ: วางไว้ตรงกลางหน้าจอ ด้านล่างปุ่ม "ใช่"
+                const centerX = (window.innerWidth - noBtn.offsetWidth) / 2;
+                targetX = centerX;
                 targetY = yesRect.bottom + 30;
             } else {
                 // บนคอม: วางไว้ด้านขวาปุ่ม "ใช่"
@@ -100,11 +102,19 @@
 
             noBtn.style.left = targetX + 'px';
             noBtn.style.top = targetY + 'px';
+
+            // แสดงปุ่มหลังจากกำหนดตำแหน่งเสร็จแล้ว
+            noBtn.style.opacity = '1';
         }
 
         // เริ่มต้นตำแหน่งปุ่มเมื่อโหลดหน้า
-        window.addEventListener('load', initializeNoButton);
-        window.addEventListener('resize', initializeNoButton);
+        window.addEventListener('load', () => {
+            // รอให้ DOM render เสร็จก่อน
+            setTimeout(initializeNoButton, 100);
+        });
+        window.addEventListener('resize', () => {
+            setTimeout(initializeNoButton, 100);
+        });
 
         // สำหรับคอม - หนีเมื่อ cursor เข้าใกล้
         noBtn.addEventListener('mouseenter', () => {
