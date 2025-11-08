@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>เทอเป็นแฮมเตอร์รึป่าว</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 </head>
 <body class="bg-gradient-to-br from-pink-300 via-purple-300 to-indigo-400 min-h-screen flex items-center justify-center overflow-hidden">
 
@@ -33,21 +32,10 @@
         </div>
     </div>
 
-    <!-- หน้าผลลัพธ์ -->
-    <div id="resultPage" class="hidden text-center px-4">
-        <h1 class="text-4xl md:text-6xl font-bold text-white mb-8 drop-shadow-lg animate-bounce">
-            เทอยอมรับแล้วสินะว่าเป็นแฮมเตอร์ 🐹✨
-        </h1>
-        <p class="text-2xl md:text-3xl text-white font-semibold">
-            ยินดีต้อนรับสู่แก๊งแฮมเตอร์! 🎉
-        </p>
-    </div>
-
     <script>
         const yesBtn = document.getElementById('yesBtn');
         const noBtn = document.getElementById('noBtn');
         const questionPage = document.getElementById('questionPage');
-        const resultPage = document.getElementById('resultPage');
 
         // ฟังก์ชันสุ่มตำแหน่งใหม่ของปุ่ม
         function moveButton() {
@@ -135,41 +123,7 @@
 
         // เมื่อกดปุ่ม "ใช่"
         yesBtn.addEventListener('click', () => {
-            // ซ่อนหน้าคำถาม
-            questionPage.classList.add('hidden');
-
-            // แสดงหน้าผลลัพธ์
-            resultPage.classList.remove('hidden');
-
-            // เอฟเฟคปาตี้
-            const duration = 5 * 1000;
-            const animationEnd = Date.now() + duration;
-            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-
-            function randomInRange(min, max) {
-                return Math.random() * (max - min) + min;
-            }
-
-            const interval = setInterval(function() {
-                const timeLeft = animationEnd - Date.now();
-
-                if (timeLeft <= 0) {
-                    return clearInterval(interval);
-                }
-
-                const particleCount = 50 * (timeLeft / duration);
-
-                confetti({
-                    ...defaults,
-                    particleCount,
-                    origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
-                });
-                confetti({
-                    ...defaults,
-                    particleCount,
-                    origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
-                });
-            }, 250);
+            window.location.href = 'https://panatakorn139-1.github.io/Hamustar/questions.html';
         });
     </script>
 </body>
