@@ -50,11 +50,24 @@
 
         // ฟังก์ชันสุ่มตำแหน่งใหม่ของปุ่ม
         function moveButton() {
-            const maxX = window.innerWidth - noBtn.offsetWidth - 20;
-            const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+            // กำหนด padding จากขอบหน้าจอ
+            const padding = 20;
 
-            const randomX = Math.max(10, Math.floor(Math.random() * maxX));
-            const randomY = Math.max(10, Math.floor(Math.random() * maxY));
+            // คำนวณขนาดหน้าจอที่ใช้งานได้
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+
+            // คำนวณขนาดปุ่ม
+            const buttonWidth = noBtn.offsetWidth;
+            const buttonHeight = noBtn.offsetHeight;
+
+            // คำนวณตำแหน่งสูงสุดที่ปุ่มสามารถอยู่ได้ (ไม่ออกนอกจอ)
+            const maxX = screenWidth - buttonWidth - padding;
+            const maxY = screenHeight - buttonHeight - padding;
+
+            // สุ่มตำแหน่งใหม่โดยอยู่ในขอบเขตที่กำหนด
+            const randomX = Math.max(padding, Math.min(maxX, Math.floor(Math.random() * maxX)));
+            const randomY = Math.max(padding, Math.min(maxY, Math.floor(Math.random() * maxY)));
 
             noBtn.style.left = randomX + 'px';
             noBtn.style.top = randomY + 'px';
@@ -64,16 +77,29 @@
         function initializeNoButton() {
             const yesRect = yesBtn.getBoundingClientRect();
             const isMobile = window.innerWidth < 768; // md breakpoint
+            const padding = 20;
+
+            let targetX, targetY;
 
             if (isMobile) {
                 // บนมือถือ: วางไว้ด้านล่างปุ่ม "ใช่"
-                noBtn.style.left = yesRect.left + 'px';
-                noBtn.style.top = (yesRect.bottom + 30) + 'px';
+                targetX = yesRect.left;
+                targetY = yesRect.bottom + 30;
             } else {
                 // บนคอม: วางไว้ด้านขวาปุ่ม "ใช่"
-                noBtn.style.left = (yesRect.right + 50) + 'px';
-                noBtn.style.top = yesRect.top + 'px';
+                targetX = yesRect.right + 50;
+                targetY = yesRect.top;
             }
+
+            // ตรวจสอบไม่ให้ออกนอกหน้าจอ
+            const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+            const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+            targetX = Math.max(padding, Math.min(maxX, targetX));
+            targetY = Math.max(padding, Math.min(maxY, targetY));
+
+            noBtn.style.left = targetX + 'px';
+            noBtn.style.top = targetY + 'px';
         }
 
         // เริ่มต้นตำแหน่งปุ่มเมื่อโหลดหน้า
