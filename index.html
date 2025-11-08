@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เทอเป็นแฮมเตอร์รึป่าว</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+</head>
+<body class="bg-gradient-to-br from-pink-300 via-purple-300 to-indigo-400 min-h-screen flex items-center justify-center overflow-hidden">
+
+    <!-- หน้าแรก -->
+    <div id="questionPage" class="text-center px-4">
+        <h1 class="text-4xl md:text-6xl font-bold text-white mb-12 drop-shadow-lg">
+            เทอเป็นแฮมเตอร์รึป่าว 🐹
+        </h1>
+
+        <div class="flex flex-col md:flex-row gap-6 items-center justify-center">
+            <!-- ปุ่มใช่ -->
+            <button
+                id="yesBtn"
+                class="bg-green-500 hover:bg-green-600 text-white font-bold text-2xl px-12 py-6 rounded-full shadow-2xl transform hover:scale-110 transition-all duration-200 z-10">
+                ใช่ 🐹💚
+            </button>
+
+            <!-- ปุ่มไม่ใช่ (จะหนี) -->
+            <button
+                id="noBtn"
+                class="bg-red-500 hover:bg-red-600 text-white font-bold text-2xl px-12 py-6 rounded-full shadow-2xl transition-all duration-200 absolute">
+                ไม่ใช่ ❌
+            </button>
+        </div>
+    </div>
+
+    <!-- หน้าผลลัพธ์ -->
+    <div id="resultPage" class="hidden text-center px-4">
+        <h1 class="text-4xl md:text-6xl font-bold text-white mb-8 drop-shadow-lg animate-bounce">
+            เทอยอมรับแล้วสินะว่าเป็นแฮมเตอร์ 🐹✨
+        </h1>
+        <p class="text-2xl md:text-3xl text-white font-semibold">
+            ยินดีต้อนรับสู่แก๊งแฮมเตอร์! 🎉
+        </p>
+    </div>
+
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const questionPage = document.getElementById('questionPage');
+        const resultPage = document.getElementById('resultPage');
+
+        // ฟังก์ชันสุ่มตำแหน่งใหม่ของปุ่ม
+        function moveButton() {
+            const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+            const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+
+            const randomX = Math.max(10, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(10, Math.floor(Math.random() * maxY));
+
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        }
+
+        // กำหนดตำแหน่งเริ่มต้นของปุ่ม "ไม่ใช่"
+        function initializeNoButton() {
+            const yesRect = yesBtn.getBoundingClientRect();
+            noBtn.style.left = (yesRect.right + 50) + 'px';
+            noBtn.style.top = yesRect.top + 'px';
+        }
+
+        // เริ่มต้นตำแหน่งปุ่มเมื่อโหลดหน้า
+        window.addEventListener('load', initializeNoButton);
+        window.addEventListener('resize', initializeNoButton);
+
+        // สำหรับคอม - หนีเมื่อ cursor เข้าใกล้
+        noBtn.addEventListener('mouseenter', () => {
+            moveButton();
+        });
+
+        // สำหรับมือถือ - หนีเมื่อพยายามจะกด
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            moveButton();
+        });
+
+        // ป้องกันการคลิก
+        noBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            moveButton();
+        });
+
+        // เมื่อกดปุ่ม "ใช่"
+        yesBtn.addEventListener('click', () => {
+            // ซ่อนหน้าคำถาม
+            questionPage.classList.add('hidden');
+
+            // แสดงหน้าผลลัพธ์
+            resultPage.classList.remove('hidden');
+
+            // เอฟเฟคปาตี้
+            const duration = 5 * 1000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            const interval = setInterval(function() {
+                const timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                const particleCount = 50 * (timeLeft / duration);
+
+                confetti({
+                    ...defaults,
+                    particleCount,
+                    origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+                });
+                confetti({
+                    ...defaults,
+                    particleCount,
+                    origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+                });
+            }, 250);
+        });
+    </script>
+</body>
+</html>
