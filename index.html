@@ -10,23 +10,23 @@
 <body class="bg-gradient-to-br from-pink-300 via-purple-300 to-indigo-400 min-h-screen flex items-center justify-center overflow-hidden">
 
     <!-- หน้าแรก -->
-    <div id="questionPage" class="text-center px-4">
-        <h1 class="text-4xl md:text-6xl font-bold text-white mb-12 drop-shadow-lg">
+    <div id="questionPage" class="text-center px-4 w-full max-w-2xl">
+        <h1 class="text-3xl sm:text-4xl md:text-6xl font-bold text-white mb-8 md:mb-12 drop-shadow-lg">
             เทอเป็นแฮมเตอร์รึป่าว 🐹
         </h1>
 
-        <div class="flex flex-col md:flex-row gap-6 items-center justify-center">
+        <div class="relative min-h-[200px] flex items-center justify-center">
             <!-- ปุ่มใช่ -->
             <button
                 id="yesBtn"
-                class="bg-green-500 hover:bg-green-600 text-white font-bold text-2xl px-12 py-6 rounded-full shadow-2xl transform hover:scale-110 transition-all duration-200 z-10">
+                class="bg-green-500 hover:bg-green-600 text-white font-bold text-xl sm:text-2xl px-8 sm:px-12 py-4 sm:py-6 rounded-full shadow-2xl transform hover:scale-110 transition-all duration-200 z-10">
                 ใช่ 🐹💚
             </button>
 
             <!-- ปุ่มไม่ใช่ (จะหนี) -->
             <button
                 id="noBtn"
-                class="bg-red-500 hover:bg-red-600 text-white font-bold text-2xl px-12 py-6 rounded-full shadow-2xl transition-all duration-200 absolute">
+                class="bg-red-500 hover:bg-red-600 text-white font-bold text-xl sm:text-2xl px-8 sm:px-12 py-4 sm:py-6 rounded-full shadow-2xl transition-all duration-200 absolute">
                 ไม่ใช่ ❌
             </button>
         </div>
@@ -63,8 +63,17 @@
         // กำหนดตำแหน่งเริ่มต้นของปุ่ม "ไม่ใช่"
         function initializeNoButton() {
             const yesRect = yesBtn.getBoundingClientRect();
-            noBtn.style.left = (yesRect.right + 50) + 'px';
-            noBtn.style.top = yesRect.top + 'px';
+            const isMobile = window.innerWidth < 768; // md breakpoint
+
+            if (isMobile) {
+                // บนมือถือ: วางไว้ด้านล่างปุ่ม "ใช่"
+                noBtn.style.left = yesRect.left + 'px';
+                noBtn.style.top = (yesRect.bottom + 30) + 'px';
+            } else {
+                // บนคอม: วางไว้ด้านขวาปุ่ม "ใช่"
+                noBtn.style.left = (yesRect.right + 50) + 'px';
+                noBtn.style.top = yesRect.top + 'px';
+            }
         }
 
         // เริ่มต้นตำแหน่งปุ่มเมื่อโหลดหน้า
