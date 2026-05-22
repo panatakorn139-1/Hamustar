@@ -1,0 +1,59 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "text": "แฮมเตอร์ชอบกินอะไรมากที่สุด?",
+      "theme": "pink",
+      "correct": "a",
+      "options": [
+        { "value": "a", "label": "เมล็ดทานตะวัน 🌻" },
+        { "value": "b", "label": "ช็อกโกแลต 🍫" },
+        { "value": "c", "label": "พิซซ่า 🍕" }
+      ]
+    },
+    {
+      "id": "q2",
+      "text": "แฮมเตอร์เป็นสัตว์ประเภทไหน?",
+      "theme": "purple",
+      "correct": "a",
+      "options": [
+        { "value": "a", "label": "สัตว์เลี้ยงลูกด้วยนม 🐹" },
+        { "value": "b", "label": "สัตว์สะเทินน้ำสะเทินบก 🐸" },
+        { "value": "c", "label": "สัตว์เลื้อยคลาน 🦎" }
+      ]
+    },
+    {
+      "id": "q3",
+      "text": "แฮมเตอร์มักทำกิจกรรมเมื่อไหร่?",
+      "theme": "indigo",
+      "correct": "b",
+      "options": [
+        { "value": "a", "label": "กลางวัน ☀️" },
+        { "value": "b", "label": "กลางคืน 🌙" },
+        { "value": "c", "label": "ตลอดเวลา ⏰" }
+      ]
+    },
+    {
+      "id": "q4",
+      "text": "แฮมเตอร์ชอบทำอะไรในวงล้อ?",
+      "theme": "pink",
+      "correct": "a",
+      "options": [
+        { "value": "a", "label": "วิ่ง 🏃" },
+        { "value": "b", "label": "นอน 😴" },
+        { "value": "c", "label": "กินข้าว 🍚" }
+      ]
+    },
+    {
+      "id": "q5",
+      "text": "สิ่งสำคัญที่สุดของการเป็นแฮมเตอร์คืออะไร?",
+      "theme": "purple",
+      "correct": "a",
+      "options": [
+        { "value": "a", "label": "มีแก้มใหญ่เก็บของได้เยอะ 🐹" },
+        { "value": "b", "label": "มีเงินเยอะ 💰" },
+        { "value": "c", "label": "มีรถหรู 🚗" }
+      ]
+    }
+  ]
+}

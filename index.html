@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>เทอเป็นแฮมเตอร์รึป่าว</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Mali', cursive, sans-serif !important;
+        }
+    </style>
 </head>
 <body class="bg-gradient-to-br from-pink-300 via-purple-300 to-indigo-400 min-h-screen flex items-center justify-center overflow-hidden">
 
@@ -104,26 +112,77 @@
             setTimeout(initializeNoButton, 100);
         });
 
-        // สำหรับคอม - หนีเมื่อ cursor เข้าใกล้
-        noBtn.addEventListener('mouseenter', () => {
+        // นับจำนวนครั้งที่พยายามหนี
+        let escapeCount = 0;
+        const tauntLabels = [
+            'ไม่ใช่ ❌',
+            'จับไม่ได้น้าาา 😜',
+            'พยายามอีกหน่อย 🥱',
+            'ยังไม่ยอมแพ้อีกเหรอ 🙄',
+            'เก่งเนอะ 5 ครั้งแล้ว 👀',
+            'เลิกได้แล้ว 😤',
+            'กดต่อก็เท่านั้น 💅',
+            'แฮมเตอร์เห็นใจเหอะ 🐹',
+            'ไม่ได้กดได้ง่ายๆนะ 🚫',
+            'OK พอแล้วน่ะ 😮‍💨'
+        ];
+
+        function tauntNoBtn() {
+            escapeCount++;
+            const label = tauntLabels[Math.min(escapeCount, tauntLabels.length - 1)];
+            noBtn.textContent = label;
             moveButton();
-        });
+        }
+
+        // สำหรับคอม - หนีเมื่อ cursor เข้าใกล้
+        noBtn.addEventListener('mouseenter', tauntNoBtn);
 
         // สำหรับมือถือ - หนีเมื่อพยายามจะกด
         noBtn.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            moveButton();
+            tauntNoBtn();
         });
 
         // ป้องกันการคลิก
         noBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            moveButton();
+            tauntNoBtn();
+        });
+
+        // Title tab เปลี่ยนตอน blur
+        const originalTitle = document.title;
+        const awayTitles = ['กลับมาน้าาา 🥺', 'แฮมเตอร์รออยู่ 🐹', 'ไปไหนน้า 😢'];
+        let titleInterval = null;
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                let i = 0;
+                titleInterval = setInterval(() => {
+                    document.title = awayTitles[i % awayTitles.length];
+                    i++;
+                }, 1500);
+            } else {
+                clearInterval(titleInterval);
+                document.title = originalTitle;
+            }
+        });
+
+        // Cursor hamster follower
+        const hamCursor = document.createElement('div');
+        hamCursor.textContent = '🐹';
+        hamCursor.style.cssText = 'position:fixed;pointer-events:none;font-size:40px;line-height:1;z-index:9999;left:0;top:0;transition:transform 0.08s ease-out;will-change:transform;';
+        document.body.appendChild(hamCursor);
+        document.addEventListener('mousemove', (e) => {
+            hamCursor.style.transform = `translate(${e.clientX - 20}px, ${e.clientY - 20}px)`;
         });
 
         // เมื่อกดปุ่ม "ใช่"
+        const isDev = ['localhost', '127.0.0.1', ''].includes(location.hostname);
+        const questionsUrl = isDev
+            ? 'questions.html'
+            : 'https://panatakorn139-1.github.io/Hamustar/questions.html';
+
         yesBtn.addEventListener('click', () => {
-            window.location.href = 'https://panatakorn139-1.github.io/Hamustar/questions.html';
+            window.location.href = questionsUrl;
         });
     </script>
 </body>

@@ -6,6 +6,48 @@
     <title>แบบทดสอบการเข้าแก๊งแฮมเตอร์</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Mali', cursive, sans-serif !important;
+        }
+        input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 2rem;
+            height: 2rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            line-height: 1;
+            margin: 0;
+            padding: 0;
+            flex-shrink: 0;
+        }
+        input[type="radio"]::before {
+            content: '🥜';
+            filter: grayscale(0.7);
+            opacity: 0.45;
+            transition: all 0.2s ease;
+            transform: scale(0.85);
+        }
+        input[type="radio"]:hover::before {
+            opacity: 0.75;
+            transform: scale(1);
+        }
+        input[type="radio"]:checked::before {
+            content: '🐹';
+            filter: none;
+            opacity: 1;
+            transform: scale(1.15);
+        }
+    </style>
 </head>
 <body class="bg-gradient-to-br from-pink-300 via-purple-300 to-indigo-400 min-h-screen flex items-center justify-center p-4">
 
@@ -15,101 +57,31 @@
         </h1>
         <p class="text-center text-gray-600 mb-8">ทำแบบทดสอบให้ถูกต้องเพื่อเข้าแก๊งแฮมเตอร์!</p>
 
+        <div id="progress" class="text-center text-gray-600 mb-4 font-semibold"></div>
+
         <form id="quizForm" class="space-y-8">
-            <div class="bg-pink-50 p-6 rounded-2xl">
-                <h3 class="font-bold text-xl text-gray-800 mb-4">1. แฮมเตอร์ชอบกินอะไรมากที่สุด?</h3>
-                <div class="space-y-3">
-                    <label class="flex items-center space-x-3 cursor-pointer hover:bg-pink-100 p-3 rounded-lg transition">
-                        <input type="radio" name="q1" value="a" class="w-5 h-5 text-pink-600">
-                        <span class="text-gray-700">เมล็ดทานตะวัน 🌻</span>
-                    </label>
-                    <label class="flex items-center space-x-3 cursor-pointer hover:bg-pink-100 p-3 rounded-lg transition">
-                        <input type="radio" name="q1" value="b" class="w-5 h-5 text-pink-600">
-                        <span class="text-gray-700">ช็อกโกแลต 🍫</span>
-                    </label>
-                    <label class="flex items-center space-x-3 cursor-pointer hover:bg-pink-100 p-3 rounded-lg transition">
-                        <input type="radio" name="q1" value="c" class="w-5 h-5 text-pink-600">
-                        <span class="text-gray-700">พิซซ่า 🍕</span>
-                    </label>
-                </div>
-            </div>
+            <div id="questionsContainer"></div>
 
-            <div class="bg-purple-50 p-6 rounded-2xl">
-                <h3 class="font-bold text-xl text-gray-800 mb-4">2. แฮมเตอร์เป็นสัตว์ประเภทไหน?</h3>
-                <div class="space-y-3">
-                    <label class="flex items-center space-x-3 cursor-pointer hover:bg-purple-100 p-3 rounded-lg transition">
-                        <input type="radio" name="q2" value="a" class="w-5 h-5 text-purple-600">
-                        <span class="text-gray-700">สัตว์เลี้ยงลูกด้วยนม 🐹</span>
-                    </label>
-                    <label class="flex items-center space-x-3 cursor-pointer hover:bg-purple-100 p-3 rounded-lg transition">
-                        <input type="radio" name="q2" value="b" class="w-5 h-5 text-purple-600">
-                        <span class="text-gray-700">สัตว์สะเทินน้ำสะเทินบก 🐸</span>
-                    </label>
-                    <label class="flex items-center space-x-3 cursor-pointer hover:bg-purple-100 p-3 rounded-lg transition">
-                        <input type="radio" name="q2" value="c" class="w-5 h-5 text-purple-600">
-                        <span class="text-gray-700">สัตว์เลื้อยคลาน 🦎</span>
-                    </label>
-                </div>
+            <div class="flex gap-3">
+                <button type="button" id="prevBtn" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold text-lg py-4 rounded-full shadow-lg transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed">
+                    ← ย้อนกลับ
+                </button>
+                <button type="button" id="nextBtn" class="flex-1 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold text-lg py-4 rounded-full shadow-lg transition-all duration-200">
+                    ถัดไป →
+                </button>
+                <button type="submit" id="submitBtn" class="hidden flex-1 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold text-lg py-4 rounded-full shadow-lg transform hover:scale-105 transition-all duration-200">
+                    ส่งคำตอบ 🐹✨
+                </button>
             </div>
-
-            <div class="bg-indigo-50 p-6 rounded-2xl">
-                <h3 class="font-bold text-xl text-gray-800 mb-4">3. แฮมเตอร์มักทำกิจกรรมเมื่อไหร่?</h3>
-                <div class="space-y-3">
-                    <label class="flex items-center space-x-3 cursor-pointer hover:bg-indigo-100 p-3 rounded-lg transition">
-                        <input type="radio" name="q3" value="a" class="w-5 h-5 text-indigo-600">
-                        <span class="text-gray-700">กลางวัน ☀️</span>
-                    </label>
-                    <label class="flex items-center space-x-3 cursor-pointer hover:bg-indigo-100 p-3 rounded-lg transition">
-                        <input type="radio" name="q3" value="b" class="w-5 h-5 text-indigo-600">
-                        <span class="text-gray-700">กลางคืน 🌙</span>
-                    </label>
-                    <label class="flex items-center space-x-3 cursor-pointer hover:bg-indigo-100 p-3 rounded-lg transition">
-                        <input type="radio" name="q3" value="c" class="w-5 h-5 text-indigo-600">
-                        <span class="text-gray-700">ตลอดเวลา ⏰</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="bg-pink-50 p-6 rounded-2xl">
-                <h3 class="font-bold text-xl text-gray-800 mb-4">4. แฮมเตอร์ชอบทำอะไรในวงล้อ?</h3>
-                <div class="space-y-3">
-                    <label class="flex items-center space-x-3 cursor-pointer hover:bg-pink-100 p-3 rounded-lg transition">
-                        <input type="radio" name="q4" value="a" class="w-5 h-5 text-pink-600">
-                        <span class="text-gray-700">วิ่ง 🏃</span>
-                    </label>
-                    <label class="flex items-center space-x-3 cursor-pointer hover:bg-pink-100 p-3 rounded-lg transition">
-                        <input type="radio" name="q4" value="b" class="w-5 h-5 text-pink-600">
-                        <span class="text-gray-700">นอน 😴</span>
-                    </label>
-                    <label class="flex items-center space-x-3 cursor-pointer hover:bg-pink-100 p-3 rounded-lg transition">
-                        <input type="radio" name="q4" value="c" class="w-5 h-5 text-pink-600">
-                        <span class="text-gray-700">กินข้าว 🍚</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="bg-purple-50 p-6 rounded-2xl">
-                <h3 class="font-bold text-xl text-gray-800 mb-4">5. สิ่งสำคัญที่สุดของการเป็นแฮมเตอร์คืออะไร?</h3>
-                <div class="space-y-3">
-                    <label class="flex items-center space-x-3 cursor-pointer hover:bg-purple-100 p-3 rounded-lg transition">
-                        <input type="radio" name="q5" value="a" class="w-5 h-5 text-purple-600">
-                        <span class="text-gray-700">มีแก้มใหญ่เก็บของได้เยอะ 🐹</span>
-                    </label>
-                    <label class="flex items-center space-x-3 cursor-pointer hover:bg-purple-100 p-3 rounded-lg transition">
-                        <input type="radio" name="q5" value="b" class="w-5 h-5 text-purple-600">
-                        <span class="text-gray-700">มีเงินเยอะ 💰</span>
-                    </label>
-                    <label class="flex items-center space-x-3 cursor-pointer hover:bg-purple-100 p-3 rounded-lg transition">
-                        <input type="radio" name="q5" value="c" class="w-5 h-5 text-purple-600">
-                        <span class="text-gray-700">มีรถหรู 🚗</span>
-                    </label>
-                </div>
-            </div>
-
-            <button type="submit" class="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold text-xl py-4 rounded-full shadow-lg transform hover:scale-105 transition-all duration-200">
-                ส่งคำตอบ 🐹✨
-            </button>
         </form>
+    </div>
+
+    <div id="fakeLoading" class="hidden max-w-3xl w-full bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-8 md:p-12">
+        <div class="text-6xl text-center mb-6 animate-bounce">🐹</div>
+        <p id="fakeLoadingText" class="text-center text-gray-700 font-bold text-xl mb-4">กำลังประมวลผล... 0%</p>
+        <div class="w-full bg-gray-200 rounded-full h-6 overflow-hidden">
+            <div id="fakeLoadingBar" class="bg-gradient-to-r from-pink-500 to-purple-600 h-6 rounded-full transition-all duration-200" style="width:0%"></div>
+        </div>
     </div>
 
     <div id="resultPass" class="hidden max-w-3xl w-full text-center">
@@ -151,21 +123,210 @@
         const quizPage = document.getElementById('quizPage');
         const resultPass = document.getElementById('resultPass');
         const resultFail = document.getElementById('resultFail');
+        const questionsContainer = document.getElementById('questionsContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        const progress = document.getElementById('progress');
 
-        const correctAnswers = {
-            q1: 'a',
-            q2: 'a',
-            q3: 'b',
-            q4: 'a',
-            q5: 'a'
-        };
+        // Cursor hamster follower
+        const hamCursor = document.createElement('div');
+        hamCursor.textContent = '🐹';
+        hamCursor.style.cssText = 'position:fixed;pointer-events:none;font-size:40px;line-height:1;z-index:9999;left:0;top:0;transition:transform 0.08s ease-out;will-change:transform;';
+        document.body.appendChild(hamCursor);
+        document.addEventListener('mousemove', (e) => {
+            hamCursor.style.transform = `translate(${e.clientX - 20}px, ${e.clientY - 20}px)`;
+        });
+
+        // Title tab taunt
+        const originalTitle = document.title;
+        const awayTitles = ['ทำต่อสิ 🐹', 'หนีไปไหน 😤', 'แฮมเตอร์รออยู่ 🥺'];
+        let titleInterval = null;
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                let i = 0;
+                titleInterval = setInterval(() => {
+                    document.title = awayTitles[i % awayTitles.length];
+                    i++;
+                }, 1500);
+            } else {
+                clearInterval(titleInterval);
+                document.title = originalTitle;
+            }
+        });
+
+        let questions = [];
+        let correctAnswers = {};
+        let currentIdx = 0;
+
+        function shuffle(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+        function renderQuestions(items) {
+            questionsContainer.innerHTML = items.map((q, idx) => `
+                <div class="quiz-question bg-${q.theme}-50 p-6 rounded-2xl" data-qid="${q.id}">
+                    <h3 class="font-bold text-xl text-gray-800 mb-4">${idx + 1}. ${q.text}</h3>
+                    <div class="space-y-3 options-list">
+                        ${shuffle(q.options).map(opt => `
+                            <label class="flex items-center space-x-3 cursor-pointer hover:bg-${q.theme}-100 p-3 rounded-lg transition">
+                                <input type="radio" name="${q.id}" value="${opt.value}" class="w-5 h-5 text-${q.theme}-600">
+                                <span class="text-gray-700">${opt.label}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+
+            // Radio uncheck เอง สุ่ม ~15%
+            const uncheckTaunts = ['เลือกใหม่ดิ 😏', 'อ้าว หลุด 🤭', 'งง? 🤔'];
+            questionsContainer.addEventListener('change', (e) => {
+                if (e.target.type !== 'radio') return;
+                if (Math.random() < 0.15) {
+                    setTimeout(() => {
+                        e.target.checked = false;
+                        const span = e.target.parentElement.querySelector('span');
+                        const original = span.textContent;
+                        span.textContent = uncheckTaunts[Math.floor(Math.random() * uncheckTaunts.length)];
+                        span.style.color = '#dc2626';
+                        setTimeout(() => {
+                            span.textContent = original;
+                            span.style.color = '';
+                        }, 1200);
+                    }, 300);
+                }
+            });
+        }
+
+        // เปลี่ยนข้อความ Next สุ่ม
+        const nextTaunts = ['ถัดไป →', 'แน่ใจน้า? →', 'คิดดีแล้วเหรอ? →', 'จะไปแล้วน้า →', 'OK ไปต่อ →'];
+        function rotateNextLabel() {
+            nextBtn.textContent = nextTaunts[Math.floor(Math.random() * nextTaunts.length)];
+        }
+
+        function renderStep() {
+            const nodes = document.querySelectorAll('.quiz-question');
+            nodes.forEach((q, i) => q.classList.toggle('hidden', i !== currentIdx));
+            progress.textContent = `คำถามที่ ${currentIdx + 1} / ${nodes.length}`;
+            prevBtn.disabled = currentIdx === 0;
+            const isLast = currentIdx === nodes.length - 1;
+            nextBtn.classList.toggle('hidden', isLast);
+            submitBtn.classList.toggle('hidden', !isLast);
+            rotateNextLabel();
+        }
+
+        prevBtn.addEventListener('click', () => {
+            if (currentIdx > 0) { currentIdx--; renderStep(); }
+        });
+        nextBtn.addEventListener('click', () => {
+            const total = document.querySelectorAll('.quiz-question').length;
+            if (currentIdx < total - 1) { currentIdx++; renderStep(); }
+        });
+
+        fetch('question/questions.json')
+            .then(r => r.json())
+            .then(data => {
+                questions = data.questions;
+                correctAnswers = Object.fromEntries(questions.map(q => [q.id, q.correct]));
+                renderQuestions(questions);
+                renderStep();
+            })
+            .catch(err => {
+                questionsContainer.innerHTML = `<p class="text-red-600 text-center">โหลดคำถามไม่ได้: ${err.message}</p>`;
+            });
+
+        const incompleteTaunts = [
+            'เฮ้ย ตอบให้ครบก่อนสิ 🙄',
+            'ขี้เกียจตอบเหรอ? แฮมเตอร์ผิดหวังนะ 🐹💔',
+            'ครบทุกข้อก่อนค่อยกดดิ 😤',
+            'ไม่ตอบครบ = ไม่ใช่แฮมเตอร์ตัวจริง 🚫'
+        ];
+        let tauntIdx = 0;
 
         quizForm.addEventListener('submit', (e) => {
             e.preventDefault();
 
-            quizPage.classList.add('hidden');
-            resultPass.classList.remove('hidden');
+            const unanswered = questions.find(q => !quizForm.querySelector(`input[name="${q.id}"]:checked`));
+            if (unanswered) {
+                const msg = incompleteTaunts[tauntIdx % incompleteTaunts.length];
+                tauntIdx++;
+                alert(msg);
+                const idx = questions.findIndex(q => q.id === unanswered.id);
+                currentIdx = idx;
+                renderStep();
+                return;
+            }
 
+            // Fake loading 0→99 แล้วร่วง สุ่มหลายรอบ
+            const fakeLoading = document.getElementById('fakeLoading');
+            const fakeLoadingBar = document.getElementById('fakeLoadingBar');
+            const fakeLoadingText = document.getElementById('fakeLoadingText');
+            quizPage.classList.add('hidden');
+            fakeLoading.classList.remove('hidden');
+
+            const loadingTaunts = [
+                'กำลังประมวลผล...',
+                'กำลังตรวจคำตอบ...',
+                'แฮมเตอร์กำลังคิด 🐹...',
+                'เกือบเสร็จแล้ว...',
+                'ค้างนิดนึง 😅...'
+            ];
+            const dropTaunts = [
+                'เอ๊ะ ลองใหม่ 😬',
+                'พังอีกแล้ว... 💥',
+                'แฮมเตอร์หลับ 😴 เริ่มใหม่',
+                'error: ลองอีกที 🔄',
+                'ก๊อกแก๊ก... โหลดใหม่ 🔧'
+            ];
+
+            let pct = 0;
+            let dropsLeft = 2 + Math.floor(Math.random() * 2);
+            let finalRun = false;
+
+            const tick = setInterval(() => {
+                pct += Math.random() * 6 + 2;
+
+                if (!finalRun && pct >= 85 + Math.random() * 14 && dropsLeft > 0) {
+                    dropsLeft--;
+                    pct = Math.random() * 30 + 5;
+                    fakeLoadingText.textContent = dropTaunts[Math.floor(Math.random() * dropTaunts.length)];
+                    fakeLoadingBar.style.width = pct + '%';
+                    return;
+                }
+
+                if (dropsLeft === 0) finalRun = true;
+
+                if (pct >= 99) {
+                    pct = 99;
+                    fakeLoadingBar.style.width = pct + '%';
+                    fakeLoadingText.textContent = `เกือบเสร็จแล้ว... 99%`;
+                    clearInterval(tick);
+                    setTimeout(() => {
+                        fakeLoadingBar.style.width = '100%';
+                        fakeLoadingText.textContent = 'เสร็จแล้ว! 🎉';
+                        setTimeout(showPass, 600);
+                    }, 2000);
+                    return;
+                }
+
+                fakeLoadingBar.style.width = pct + '%';
+                const taunt = loadingTaunts[Math.min(4, Math.floor(pct / 20))];
+                fakeLoadingText.textContent = `${taunt} ${Math.floor(pct)}%`;
+            }, 200);
+        });
+
+        function showPass() {
+            document.getElementById('fakeLoading').classList.add('hidden');
+            resultPass.classList.remove('hidden');
+            runConfetti();
+        }
+
+        function runConfetti() {
             const duration = 5 * 1000;
             const animationEnd = Date.now() + duration;
             const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
@@ -194,7 +355,7 @@
                     origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
                 });
             }, 250);
-        });
+        }
     </script>
 </body>
 </html>
